@@ -11,27 +11,36 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/oswystan/bitmain/model"
+	"github.com/oswystan/bitmain/store"
 )
 
 func PostClass(w http.ResponseWriter, r *http.Request) {
-	log.Printf("do post class")
 	class := &model.Class{}
 	err := decodeBody(r, class)
 	if err != nil {
 		sendResponse(w, &model.Error{err.Error()}, http.StatusBadRequest)
 		return
 	}
+	st := store.NewClassStore()
+	err = st.Post(class)
+	if err != nil {
+		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
+		return
+	}
 	sendResponse(w, class, http.StatusOK)
 }
 
 func GetTopTeacher(w http.ResponseWriter, r *http.Request) {
-	log.Printf("do get top teacher")
-	teacher := &model.TopTeacher{"lily"}
-	sendResponse(w, teacher, http.StatusOK)
+	st := store.NewClassStore()
+	ret, err := st.GetTopTeacher()
+	if err != nil {
+		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	sendResponse(w, ret, http.StatusOK)
 }
 
 //==================================== END ======================================

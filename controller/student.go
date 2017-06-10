@@ -10,38 +10,45 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/oswystan/bitmain/model"
+	"github.com/oswystan/bitmain/store"
 )
 
 func PostStudent(w http.ResponseWriter, r *http.Request) {
-	log.Printf("post student")
 	student := &model.Student{}
 	err := decodeBody(r, student)
 	if err != nil {
 		sendResponse(w, &model.Error{err.Error()}, http.StatusBadRequest)
 		return
 	}
-	st := &model.Student{
-		Id: "1000",
-	}
 
-	sendResponse(w, st, http.StatusOK)
+	st := store.NewStudentStore()
+	err = st.Post(student)
+	if err != nil {
+		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	sendResponse(w, student, http.StatusOK)
 }
 
 func GetSumScore(w http.ResponseWriter, r *http.Request) {
-	log.Printf("get score")
 	vars := mux.Vars(r)
-	_, ok := vars["student_id"]
+	sid, ok := vars["student_id"]
 	if !ok {
 		sendResponse(w, &model.Error{"no student id found"}, http.StatusBadRequest)
 		return
 	}
+	student := &model.Student{Id: sid}
+	st := store.NewStudentStore()
+	score, err := st.GetTotalScore(student)
+	if err != nil {
+		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
+		return
+	}
 
-	score := &model.TotalScore{100}
 	sendResponse(w, score, http.StatusOK)
 }
 

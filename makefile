@@ -17,7 +17,7 @@ all: db build
 
 build:
 	@echo "===> building ..."
-	go build -o $(bin)
+	@go build -o $(bin)
 	@echo "===> done."
 
 db:
