@@ -10,7 +10,12 @@
 
 package store
 
-import "github.com/oswystan/bitmain/model"
+import (
+	"fmt"
+	"log"
+
+	"github.com/oswystan/bitmain/model"
+)
 
 var sqlMaxScore = `select  * from students as s where s.score = (select max(score) from students) order by id limit 1`
 
@@ -28,6 +33,10 @@ func (st *ClassStore) Get(data *model.Class) error {
 }
 
 func (st *ClassStore) Post(data *model.Class) error {
+	if data.ClassNumber < 0 || data.ClassNumber > 99 ||
+		len(data.Teacher) > 20 || len(data.Teacher) == 0 {
+		return fmt.Errorf("invalid input data")
+	}
 	err := db.Insert(data)
 	if err == nil {
 		return nil
@@ -39,11 +48,13 @@ func (st *ClassStore) GetTopTeacher() (*model.TopTeacher, error) {
 	student := &model.Student{}
 	_, err := db.QueryOne(student, sqlMaxScore)
 	if err != nil {
+		log.Printf("fail to call [%s]", sqlMaxScore)
 		return nil, err
 	}
 	class := &model.Class{ClassNumber: student.ClassNumber}
-	err = db.Select(class)
+	err = st.Get(class)
 	if err != nil {
+		log.Printf("error: %s", err)
 		return nil, err
 	}
 	return &model.TopTeacher{Teacher: class.Teacher}, nil

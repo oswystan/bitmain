@@ -55,13 +55,13 @@ function do_student() {
     data_post='{
         "id":"10000",
         "classNumber":1,
-        "score": 1000
+        "score": 100
     }'
     curl -XPOST -d "${data_post}" "http://localhost:8000/register-student" -w "%{http_code}\n"
     data_post='{
-        "id":"10001",
+        "id":"10002",
         "classNumber":2,
-        "score": 2000
+        "score": 20
     }'
     curl -XPOST -d "${data_post}" "http://localhost:8000/register-student" -w "%{http_code}\n"
     curl -XGET "http://localhost:8000/get-class-total-score/10000" -w "%{http_code}\n"

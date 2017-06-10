@@ -11,6 +11,7 @@ package store
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/oswystan/bitmain/model"
 )
@@ -25,8 +26,17 @@ func NewStudentStore() *StudentStore {
 }
 
 func (st *StudentStore) Post(data *model.Student) error {
+	// validation
+	match, err := regexp.MatchString(`\d{5}`, data.Id)
+	if len(data.Id) != 5 || !match {
+		return fmt.Errorf("invalid student id")
+	}
+	if data.ClassNumber < 0 || data.ClassNumber > 99 ||
+		data.Score < 0 || data.Score > 100 {
+		return fmt.Errorf("invalid input data")
+	}
 	// insert first otherwise update
-	err := db.Insert(data)
+	err = db.Insert(data)
 	if err == nil {
 		return nil
 	}

@@ -11,7 +11,7 @@
 package model
 
 type Class struct {
-	ClassNumber int    `json:"classNumber"`
+	ClassNumber int    `json:"classNumber" sql:",pk"`
 	Teacher     string `json:"teacher"`
 }
 
