@@ -19,14 +19,14 @@ create user bitmain with superuser createdb login password 'bitmain';
 -- tables
 create table students (
     id char(5) not null,
-    class_id int not null,
+    classNumber int not null,
     score int not null,
     primary key(id)
 );
 create table classes (
-    id int not null,
+    classNumber int not null,
     teacher varchar(20) not null,
-    primary key(id)
+    primary key(classNumber)
 );
 
 ---------------------------------------------------------------------------------
