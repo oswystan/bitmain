@@ -7,22 +7,22 @@
 ##         author: wystan
 ##
 #######################################################################
-.PHONY: all build test install db c q clean
+.PHONY: all test install db c q clean
 
-db := "bitmain"
-bin := "bitmain"
+db := bitmain
+bin := bitmain
+src := $(shell find . -name '*.go'|grep -v *_test.go)
 
-all: db build
+all: db $(bin)
 
-
-build:
+$(bin): $(src)
 	@echo "===> building ..."
 	@go build -o $(bin)
 	@echo "===> done."
 
 db:
 	@echo "===> install database ..."
-	@psql -f store/pg.sql > /dev/null
+	@PGOPTIONS="--client-min-messages=warning" psql -q -f store/pg.sql
 	@echo "===> done."
 
 q:
@@ -36,7 +36,7 @@ c:
 
 clean:
 	@echo "===> cleaning ..."
-	@psql -c "drop database if exists bitmain;"
+	@psql -c "drop database if exists $(db);"
 	@rm -f $(bin)
 	@echo "===> done."
 
