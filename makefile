@@ -12,7 +12,7 @@
 db := bitmain
 bin := bitmain
 src := $(shell find . -name '*.go'|grep -v *_test.go)
-pgsql := sudo sudo -u postgres PGOPTIONS="--client-min-messages=warning" psql
+pgsql := sudo -u postgres PGOPTIONS="--client-min-messages=warning" psql
 
 all: db $(bin)
 
