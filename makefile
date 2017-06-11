@@ -12,6 +12,7 @@
 db := bitmain
 bin := bitmain
 src := $(shell find . -name '*.go'|grep -v *_test.go)
+pgsql := sudo sudo -u postgres PGOPTIONS="--client-min-messages=warning" psql
 
 all: db $(bin)
 
@@ -22,21 +23,21 @@ $(bin): $(src)
 
 db:
 	@echo "===> install database ..."
-	@PGOPTIONS="--client-min-messages=warning" psql -q -f store/pg.sql
+	@$(pgsql) -q -f store/pg.sql
 	@echo "===> done."
 
 q:
-	@psql $(db) -c "select * from students;"
-	@psql $(db) -c "select * from classes;"
+	@$(pgsql) $(db) -c "select * from students;"
+	@$(pgsql) $(db) -c "select * from classes;"
 
 c:
-	@psql $(db) -c "delete from students;"
-	@psql $(db) -c "delete from classes;"
+	@$(pgsql) $(db) -c "delete from students;"
+	@$(pgsql) $(db) -c "delete from classes;"
 
 
 clean:
 	@echo "===> cleaning ..."
-	@psql -c "drop database if exists $(db);"
+	@$(pgsql) -c "drop database if exists $(db);"
 	@rm -f $(bin) $(bin).log
 	@echo "===> done."
 
