@@ -27,8 +27,8 @@ func NewStudentStore() *StudentStore {
 
 func (st *StudentStore) Post(data *model.Student) error {
 	// validation
-	match, err := regexp.MatchString(`\d{5}`, data.Id)
-	if len(data.Id) != 5 || !match {
+	match, err := regexp.MatchString(`^\d{5}$`, data.Id)
+	if !match {
 		return fmt.Errorf("invalid student id")
 	}
 	if data.ClassNumber < 0 || data.ClassNumber > 99 ||
