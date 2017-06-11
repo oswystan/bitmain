@@ -21,7 +21,13 @@ import (
 func main() {
 	logger := utils.Logger()
 	logger.Info("starting server...")
-	err := store.Connect("bitmain", "bitmain", "bitmain")
+	cfg := &utils.Config{}
+	err := utils.LoadConfig(cfg)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	err = store.Connect(cfg.Database, cfg.User, cfg.Passwd)
 	if err != nil {
 		logger.Error(err.Error())
 		return
