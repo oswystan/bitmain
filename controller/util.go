@@ -15,7 +15,11 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/oswystan/bitmain/utils"
 )
+
+var logger = utils.Logger()
 
 func sendResponse(w http.ResponseWriter, v interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

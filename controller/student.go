@@ -21,6 +21,7 @@ func PostStudent(w http.ResponseWriter, r *http.Request) {
 	student := &model.Student{}
 	err := decodeBody(r, student)
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusBadRequest)
 		return
 	}
@@ -28,6 +29,7 @@ func PostStudent(w http.ResponseWriter, r *http.Request) {
 	st := store.NewStudentStore()
 	err = st.Post(student)
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
 		return
 	}
@@ -45,6 +47,7 @@ func GetSumScore(w http.ResponseWriter, r *http.Request) {
 	st := store.NewStudentStore()
 	score, err := st.GetTotalScore(student)
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
 		return
 	}

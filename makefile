@@ -37,7 +37,7 @@ c:
 clean:
 	@echo "===> cleaning ..."
 	@psql -c "drop database if exists $(db);"
-	@rm -f $(bin)
+	@rm -f $(bin) $(bin).log
 	@echo "===> done."
 
 #######################################################################

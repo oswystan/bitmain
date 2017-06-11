@@ -21,12 +21,14 @@ func PostClass(w http.ResponseWriter, r *http.Request) {
 	class := &model.Class{}
 	err := decodeBody(r, class)
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusBadRequest)
 		return
 	}
 	st := store.NewClassStore()
 	err = st.Post(class)
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
 		return
 	}
@@ -37,6 +39,7 @@ func GetTopTeacher(w http.ResponseWriter, r *http.Request) {
 	st := store.NewClassStore()
 	ret, err := st.GetTopTeacher()
 	if err != nil {
+		logger.Error(err)
 		sendResponse(w, &model.Error{err.Error()}, http.StatusInternalServerError)
 		return
 	}

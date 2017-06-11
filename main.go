@@ -11,30 +11,32 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/oswystan/bitmain/router"
 	"github.com/oswystan/bitmain/store"
+	"github.com/oswystan/bitmain/utils"
 )
 
 func main() {
-	log.Printf("starting server...")
+	logger := utils.Logger()
+	logger.Info("starting server...")
 	err := store.Connect("bitmain", "bitmain", "bitmain")
 	if err != nil {
-		log.Printf(err.Error())
+		logger.Error(err.Error())
+		return
 	}
 	defer store.Close()
-	log.Printf("database connected")
+	logger.Info("database connected")
 
 	r := router.NewRouter()
 	err = http.ListenAndServe(":8000", r)
 	if err != nil {
-		log.Printf("ERROR: %s", err.Error())
+		logger.Error("ERROR: %s", err.Error())
 		return
 	}
 
-	log.Printf("Server Exit!")
+	logger.Warn("Server Exit!")
 }
 
 //==================================== END ======================================
