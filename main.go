@@ -12,6 +12,7 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/oswystan/bitmain/router"
 	"github.com/oswystan/bitmain/store"
@@ -29,7 +30,10 @@ func main() {
 	}
 	err = store.Connect(cfg.Database, cfg.User, cfg.Passwd)
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error("fail to connect database: %s", err.Error())
+
+		//waiting for log out
+		time.Sleep(100 * time.Millisecond)
 		return
 	}
 	defer store.Close()

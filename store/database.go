@@ -31,6 +31,11 @@ func Connect(db_name, user, passwd string) error {
 	if db == nil {
 		return fmt.Errorf("fail to connect database %s", db_name)
 	}
+	var n int
+	_, err := db.QueryOne(pg.Scan(&n), "select 1")
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
