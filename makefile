@@ -47,6 +47,7 @@ clean:
 	@echo "===> done."
 
 test:
+	@go get github.com/smartystreets/goconvey/convey
 	@go test -v
 
 #######################################################################
