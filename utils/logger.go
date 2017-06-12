@@ -28,12 +28,16 @@ func init() {
 	flw.SetFormat("[%D %T] [%L]%M")
 	flw.SetRotateSize(2 * 1024 * 1024)
 	flw = flw.SetRotateMaxBackup(10)
-	flw.SetHeadFoot("---------------- START --------------", "---------------- END ----------------")
 	logger.AddFilter("file", l4g.FINE, flw)
+	logger.Info("################################")
+	logger.Info("starting server ....            ")
+	logger.Info("################################")
 }
 
 func LogExit() {
+	logger.Warn("################################")
 	logger.Warn("server exit !")
+	logger.Warn("################################")
 	logger.Close()
 	time.Sleep(100 * time.Millisecond)
 }

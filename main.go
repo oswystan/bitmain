@@ -21,7 +21,6 @@ import (
 func main() {
 	logger := utils.Logger()
 	defer utils.LogExit()
-	logger.Info("starting server...")
 	cfg := &utils.Config{}
 	err := utils.LoadConfig(cfg)
 	if err != nil {
