@@ -12,7 +12,6 @@ package main
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/oswystan/bitmain/router"
 	"github.com/oswystan/bitmain/store"
@@ -21,6 +20,7 @@ import (
 
 func main() {
 	logger := utils.Logger()
+	defer utils.LogExit()
 	logger.Info("starting server...")
 	cfg := &utils.Config{}
 	err := utils.LoadConfig(cfg)
@@ -31,9 +31,6 @@ func main() {
 	err = store.Connect(cfg.Database, cfg.User, cfg.Passwd)
 	if err != nil {
 		logger.Error("fail to connect database: %s", err.Error())
-
-		//waiting for log out
-		time.Sleep(100 * time.Millisecond)
 		return
 	}
 	defer store.Close()
@@ -45,8 +42,6 @@ func main() {
 		logger.Error("ERROR: %s", err.Error())
 		return
 	}
-
-	logger.Warn("Server Exit!")
 }
 
 //==================================== END ======================================

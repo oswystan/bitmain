@@ -11,6 +11,8 @@
 package utils
 
 import (
+	"time"
+
 	l4g "github.com/alecthomas/log4go"
 )
 
@@ -23,10 +25,17 @@ func Logger() l4g.Logger {
 func init() {
 	flw := l4g.NewFileLogWriter("bitmain.log", false)
 	flw.SetRotate(true)
+	flw.SetFormat("[%D %T] [%L]%M")
 	flw.SetRotateSize(2 * 1024 * 1024)
 	flw = flw.SetRotateMaxBackup(10)
-	flw.SetHeadFoot("=====================", "======== END ========")
+	flw.SetHeadFoot("---------------- START --------------", "---------------- END ----------------")
 	logger.AddFilter("file", l4g.FINE, flw)
+}
+
+func LogExit() {
+	logger.Warn("server exit !")
+	logger.Close()
+	time.Sleep(100 * time.Millisecond)
 }
 
 //==================================== END ======================================
