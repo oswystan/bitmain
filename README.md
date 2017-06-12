@@ -1,7 +1,6 @@
 ## install (for unbuntu only)
 
 ```
-
 #install dependencies
 sudo apt-get install postgresql
 sudo -u postgres createuser $USER
@@ -16,13 +15,12 @@ make
 
 # run
 ./bitmain
-
 ```
 
 ## test
 
 ```
 cd bitmain
-./run_st.sh
+make test
 
 ```

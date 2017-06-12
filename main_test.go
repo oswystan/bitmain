@@ -87,6 +87,14 @@ func TestSpec(t *testing.T) {
 			So(res.StatusCode, ShouldNotEqual, http.StatusOK)
 		})
 	})
+	Convey("===>get-top-teacher", t, func() {
+		Convey("normal case", func() {
+			res, err := http.Get(root + "/get-top-teacher")
+			So(err, ShouldEqual, nil)
+			defer res.Body.Close()
+			So(res.StatusCode, ShouldEqual, http.StatusOK)
+		})
+	})
 }
 
 //==================================== END ======================================
