@@ -11,7 +11,7 @@
 package utils
 
 import (
-	l4g "github.com/keepeye/log4go"
+	l4g "github.com/alecthomas/log4go"
 )
 
 var logger = l4g.NewDefaultLogger(l4g.FINE)
@@ -21,7 +21,12 @@ func Logger() l4g.Logger {
 }
 
 func init() {
-	logger.AddFilter("file", l4g.FINE, l4g.NewFileLogWriter("bitmain.log", false))
+	flw := l4g.NewFileLogWriter("bitmain.log", false)
+	flw.SetRotate(true)
+	flw.SetRotateSize(2 * 1024 * 1024)
+	flw = flw.SetRotateMaxBackup(10)
+	flw.SetHeadFoot("=====================", "======== END ========")
+	logger.AddFilter("file", l4g.FINE, flw)
 }
 
 //==================================== END ======================================

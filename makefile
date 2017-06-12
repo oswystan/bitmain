@@ -43,7 +43,7 @@ c:
 clean:
 	@echo "===> cleaning ..."
 	@$(pgsql) -c "drop database if exists $(db);"
-	@rm -f $(bin) $(bin).log
+	@rm -f $(bin) $(bin).log*
 	@echo "===> done."
 
 test:
